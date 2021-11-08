@@ -1,0 +1,2 @@
+*/2 * * * * sh /opt/script/cron/cleanCache.sh >> /opt/script/cron/tab.txt
+*/20 * * * * sh /opt/script/cron/cleanLog.sh >> /opt/script/cron/tab.txt
