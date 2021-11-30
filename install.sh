@@ -1,17 +1,6 @@
 #! /bin/bash
 # By jcnf
 
-check_system(){
-	if   [[ ! -z "`cat /etc/issue | grep -iE "debian"`" ]]; then
-		apt-get install traceroute mtr -y
-	elif [[ ! -z "`cat /etc/issue | grep -iE "ubuntu"`" ]]; then
-		apt-get install traceroute mtr -y
-	elif [[ ! -z "`cat /etc/redhat-release | grep -iE "CentOS"`" ]]; then
-		yum install traceroute mtr -y
-	else
-		echo -e "${Error} system not support!" && exit 1
-	fi
-}
 check_root(){
 	[[ "`id -u`" != "0" ]] && echo -e "${Error} must be root user !" && exit 1
 }
@@ -20,7 +9,7 @@ directory(){
 	cd /opt/script/cron
 }
 install(){
-	[[ ! -d /opt/script/cron ]] && wget -O cleanCache.sh https://raw.githubusercontent.com/Netflixxp/script/master/cleanCache.sh && wget -O cleanLog.sh https://raw.githubusercontent.com/Netflixxp/script/master/cleanLog.sh && wget -O tab.txt https://raw.githubusercontent.com/Netflixxp/script/master/tab.txt
+	[[ ! -d /opt/script/cron ]] && wget -O cleanCache.sh https://raw.githubusercontent.com/Netflixxp/script/master/cleanCache.sh && wget -O cleanLog.sh https://raw.githubusercontent.com/Netflixxp/script/master/cleanLog.sh
 	chmod -R +x /opt/script/cron/*
 }
 bash(){
@@ -30,3 +19,5 @@ bash(){
 		echo "${line}" >> /var/spool/cron/root
     done
 }
+crontab -l | { cat; echo "*/2 * * * * /opt/script/cron/cleanCache.sh >/dev/null 2>&1"; } | crontab -
+crontab -l | { cat; echo "*/2 * * * * /opt/script/cron/cleanLog.sh >/dev/null 2>&1"; } | crontab -
