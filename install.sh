@@ -12,12 +12,5 @@ install(){
 	[[ ! -d /opt/script/cron ]] && wget -O cleanCache.sh https://raw.githubusercontent.com/Netflixxp/script/master/cleanCache.sh && wget -O cleanLog.sh https://raw.githubusercontent.com/Netflixxp/script/master/cleanLog.sh
 	chmod -R +x /opt/script/cron/*
 }
-bash(){
-	cd /opt/script/cron
-	cat tab.txt | while read line
-	do
-		echo "${line}" >> /var/spool/cron/root
-    done
-}
 crontab -l | { cat; echo "*/2 * * * * /opt/script/cron/cleanCache.sh >/dev/null 2>&1"; } | crontab -
 crontab -l | { cat; echo "*/2 * * * * /opt/script/cron/cleanLog.sh >/dev/null 2>&1"; } | crontab -
